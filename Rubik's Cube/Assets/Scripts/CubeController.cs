@@ -4,16 +4,17 @@ using UnityEngine;
 
 public class CubeController : MonoBehaviour
 {
-    public float sensitive = 0.002f;
-    private bool left_click = false;
+    private Vector2 mouse_movement;
 
-    SpinWholeCube SpinCube;
+    private RotateCube rotateCube;
+    private SpinCube spinCube;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        SpinCube = GetComponent<SpinWholeCube>();
+        rotateCube = GetComponent<RotateCube>();
+        spinCube = GetComponent<SpinCube>();
     }
 
     // Update is called once per frame
@@ -24,15 +25,16 @@ public class CubeController : MonoBehaviour
 
     void checkUserInput()
     {
-        if (Input.GetMouseButtonDown(0)) left_click = true;
-        else if (Input.GetMouseButtonUp(0)) left_click = false;
-        else if (Input.GetMouseButtonDown(1)) SpinCube.rightClick();
-        else if (Input.GetMouseButtonUp(1)) SpinCube.rightRelease();
-        else if (Input.GetMouseButtonDown(2)) SpinCube.scrollClick();
+        if (Input.GetMouseButtonDown(0)) spinCube.leftClick();
+        else if (Input.GetMouseButtonUp(0)) spinCube.leftRelease();
+        else if (Input.GetMouseButtonDown(1)) rotateCube.rightClick();
+        else if (Input.GetMouseButtonUp(1)) rotateCube.rightRelease();
+        else if (Input.GetMouseButtonDown(2)) rotateCube.scrollClick();
+        mouse_movement = new Vector2(Input.GetAxis(MouseAxis.MOUSE_X), Input.GetAxis(MouseAxis.MOUSE_Y));
+    }
 
-        if (left_click)
-        {
-        }
-
+    public Vector2 MouseMovement()
+    {
+        return mouse_movement;
     }
 }

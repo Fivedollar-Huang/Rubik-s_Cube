@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpinWholeCube : MonoBehaviour
+public class RotateCube : MonoBehaviour
 {
     public float sensitive = 200f;
+
+    private CubeController cubeController;
 
     private Vector2 mouse_direction;
     private Vector3 target_rotation;
@@ -15,13 +17,17 @@ public class SpinWholeCube : MonoBehaviour
     private bool right_click = false;
     private bool scroll_click = false;
 
+    private void Start()
+    {
+        cubeController = GetComponent<CubeController>();
+    }
 
     void Update()
     {
         if (right_click)
         {
-            mouse_direction = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
-            if (mouse_direction != Vector2.zero)
+            mouse_direction = cubeController.MouseMovement();
+            if ( mouse_direction != Vector2.zero)
             {
                 right_drag = true;
             }
