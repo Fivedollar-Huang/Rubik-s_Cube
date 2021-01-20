@@ -93,6 +93,10 @@ public class GroupFaces : MonoBehaviour
                 center = tup.parent;
                 pieces = up;
                 break;
+            case Tags.DOWN:
+                center = tdown.parent;
+                pieces = down;
+                break;
         }
 
         return pieces;

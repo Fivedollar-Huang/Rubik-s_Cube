@@ -11,7 +11,7 @@ public class SpinCube : MonoBehaviour
 
     public Transform Center;
 
-    private float target_rotation;
+    private Quaternion euler_target;
 
     private bool left_click = false;
     private bool spin = false;
@@ -63,25 +63,36 @@ public class SpinCube : MonoBehaviour
             {
                 spinning = true;
                 Center = groupFaces.GroupPieces(TAG);
-                target_rotation = Center.transform.localRotation.eulerAngles.z + 90;
+                float target_rotation = Center.transform.localRotation.eulerAngles.z + 90;
+                if (target_rotation == 360) target_rotation = 0;
+
+                euler_target = Quaternion.Euler(Center.localRotation.eulerAngles.x,
+                                                           Center.localRotation.eulerAngles.y,
+                                                           target_rotation);
             }
         }   
     }
 
     private void spinSide()
     {
-        Quaternion euler_target = Quaternion.Euler(Center.localRotation.eulerAngles.x,
-                                                   Center.localRotation.eulerAngles.y,
-                                                   target_rotation);
         Center.localRotation = Quaternion.RotateTowards(Center.localRotation, 
                                                         euler_target,
                                                         sensitive * Time.deltaTime);
-        if (Center.localRotation.eulerAngles.z == target_rotation)
+        if (Center.localRotation.eulerAngles.x % 90 == 0 &&
+            Center.localRotation.eulerAngles.y % 90 == 0 &&
+            Center.localRotation.eulerAngles.z % 90 == 0 ||
+            Center.localRotation == euler_target)
         {
             spinning = false;
             groupFaces.UnparentPieces(TAG);
             groupFaces.UpdateSides();
-            print("false");
+        }
+        else
+        {
+            print("something");
+            print(Center.localRotation.eulerAngles);
+            print(euler_target.eulerAngles);
+            print(Center.localRotation == euler_target);
         }
     }
 }
