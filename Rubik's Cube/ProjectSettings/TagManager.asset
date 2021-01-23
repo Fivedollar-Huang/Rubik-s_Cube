@@ -10,6 +10,8 @@ TagManager:
   - Up
   - Left
   - Down
+  - Corner
+  - Edge
   layers:
   - Default
   - TransparentFX

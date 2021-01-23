@@ -14,5 +14,8 @@ public class Tags
     public const string DOWN = "Down";
     public const string LEFT = "Left";
     public const string RIGHT = "Right";
+
+    public const string CORNER = "Corner";
+    public const string EDGE = "Edge";
 }
 

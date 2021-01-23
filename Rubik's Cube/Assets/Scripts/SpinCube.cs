@@ -61,15 +61,25 @@ public class SpinCube : MonoBehaviour
             TAG = hit.transform.tag;
             if (TAG != Tags.UNTAGGED)
             {
+                if (TAG == Tags.CORNER || TAG == Tags.EDGE)
+                {
+                    TAG = groupFaces.CheckFaceBelong(hit.transform.parent.transform.gameObject, hit.normal);
+                }
+                print(TAG);
+                print("Normal is: ");
+                print(hit.normal);
+                if (TAG == "None") return;
                 spinning = true;
                 Center = groupFaces.GroupPieces(TAG);
                 float target_rotation = Center.transform.localRotation.eulerAngles.z + 90;
                 if (target_rotation == 360) target_rotation = 0;
 
                 euler_target = Quaternion.Euler(Center.localRotation.eulerAngles.x,
-                                                           Center.localRotation.eulerAngles.y,
-                                                           target_rotation);
+                                                            Center.localRotation.eulerAngles.y,
+                                                            target_rotation);
+                
             }
+
         }   
     }
 
@@ -86,13 +96,6 @@ public class SpinCube : MonoBehaviour
             spinning = false;
             groupFaces.UnparentPieces(TAG);
             groupFaces.UpdateSides();
-        }
-        else
-        {
-            print("something");
-            print(Center.localRotation.eulerAngles);
-            print(euler_target.eulerAngles);
-            print(Center.localRotation == euler_target);
         }
     }
 }

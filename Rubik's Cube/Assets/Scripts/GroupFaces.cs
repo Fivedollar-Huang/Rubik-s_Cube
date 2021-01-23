@@ -123,4 +123,64 @@ public class GroupFaces : MonoBehaviour
             piece.transform.parent = center.transform.parent;
         }
     }
+
+    public string CheckFaceBelong(GameObject _piece, Vector3 _normal)
+    {
+        string center_tag = "None";
+        foreach (List<GameObject> pieces in GetListListGameObject())
+        {
+            if (pieces.Contains(_piece))
+            {
+                if (pieces == up)
+                {
+                    if (Vector3.Distance( _normal, -tup.forward) <= 0.001)
+                    {
+                        center_tag = Tags.UP;
+                    }
+                }
+                else if (pieces == down)
+                {
+                    if (Vector3.Distance(_normal, -tdown.forward) <= 0.001)
+                    {
+                        center_tag = Tags.DOWN;
+                    }
+                }
+                else if (pieces == left)
+                {
+                    if (Vector3.Distance(_normal, -tleft.forward) <= 0.001)
+                    {
+                        center_tag = Tags.LEFT;
+                    }
+                }
+                else if (pieces == right)
+                {
+                    if (Vector3.Distance(_normal, -tright.forward) <= 0.001)
+                    {
+                        center_tag = Tags.RIGHT;
+                    }
+                }
+                else if (pieces == front)
+                {
+                    if (Vector3.Distance(_normal, -tfront.forward) <= 0.001)
+                    {
+                        center_tag = Tags.FRONT;
+                    }
+                }
+                else if (pieces == back)
+                {
+                    if (Vector3.Distance(_normal, -tback.forward) <= 0.001)
+                    {
+                        center_tag = Tags.BACK;
+                    }
+                }
+            }
+        }
+        return center_tag;
+    }
+    
+    private List<List<GameObject>> GetListListGameObject()
+    {
+        List<List<GameObject>> combineList = new List<List<GameObject>> { up, down, right, left, front, back };
+        return combineList;
+    }   
 }
