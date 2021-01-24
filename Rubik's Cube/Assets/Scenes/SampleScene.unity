@@ -758,6 +758,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: F
       objectReference: {fileID: 0}
+    - target: {fileID: 8263607764558419714, guid: d9326e3b54d039b44b8a7b5c8429f416,
+        type: 3}
+      propertyPath: m_TagString
+      value: Front
+      objectReference: {fileID: 0}
     - target: {fileID: 8783685953200475576, guid: d9326e3b54d039b44b8a7b5c8429f416,
         type: 3}
       propertyPath: m_RootOrder
@@ -1133,6 +1138,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: B
+      objectReference: {fileID: 0}
+    - target: {fileID: 8263607764558419714, guid: d9326e3b54d039b44b8a7b5c8429f416,
+        type: 3}
+      propertyPath: m_TagString
+      value: Back
       objectReference: {fileID: 0}
     - target: {fileID: 8783685953200475576, guid: d9326e3b54d039b44b8a7b5c8429f416,
         type: 3}
@@ -1521,6 +1531,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: R
+      objectReference: {fileID: 0}
+    - target: {fileID: 8263607764558419714, guid: d9326e3b54d039b44b8a7b5c8429f416,
+        type: 3}
+      propertyPath: m_TagString
+      value: Right
       objectReference: {fileID: 0}
     - target: {fileID: 8783685953200475576, guid: d9326e3b54d039b44b8a7b5c8429f416,
         type: 3}
@@ -1947,6 +1962,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: D
       objectReference: {fileID: 0}
+    - target: {fileID: 8263607764558419714, guid: d9326e3b54d039b44b8a7b5c8429f416,
+        type: 3}
+      propertyPath: m_TagString
+      value: Down
+      objectReference: {fileID: 0}
     - target: {fileID: 8783685953200475576, guid: d9326e3b54d039b44b8a7b5c8429f416,
         type: 3}
       propertyPath: m_RootOrder
@@ -2041,6 +2061,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: L
+      objectReference: {fileID: 0}
+    - target: {fileID: 8263607764558419714, guid: d9326e3b54d039b44b8a7b5c8429f416,
+        type: 3}
+      propertyPath: m_TagString
+      value: Left
       objectReference: {fileID: 0}
     - target: {fileID: 8783685953200475576, guid: d9326e3b54d039b44b8a7b5c8429f416,
         type: 3}
@@ -2852,6 +2877,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: U
+      objectReference: {fileID: 0}
+    - target: {fileID: 8263607764558419714, guid: d9326e3b54d039b44b8a7b5c8429f416,
+        type: 3}
+      propertyPath: m_TagString
+      value: Up
       objectReference: {fileID: 0}
     - target: {fileID: 8783685953200475576, guid: d9326e3b54d039b44b8a7b5c8429f416,
         type: 3}
