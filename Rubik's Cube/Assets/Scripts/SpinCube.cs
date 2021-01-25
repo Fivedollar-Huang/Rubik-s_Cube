@@ -62,8 +62,7 @@ public class SpinCube : MonoBehaviour
         }
         else
         {
-            pending_spin++;
-            if (pending_spin == 4) pending_spin = 0;
+            checkClick();
         }
     }
     public void leftRelease()
@@ -80,6 +79,18 @@ public class SpinCube : MonoBehaviour
     }
 
     //**************************************************************************************
+    private void checkClick()
+    {
+        RaycastHit save_hit;
+        if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out save_hit))
+        {
+            if (save_hit.transform.tag == TAG)
+            {
+                pending_spin++;
+                if (pending_spin == 4) pending_spin = 0;
+            }
+        }
+    }
     private void addSpinToEuler_target()
     {
         float target_rotation = Center.transform.localRotation.eulerAngles.z + 90;
