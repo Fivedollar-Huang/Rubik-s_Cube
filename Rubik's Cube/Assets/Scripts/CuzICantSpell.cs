@@ -6,6 +6,7 @@
 
 public class Tags
 {
+    public const string NULL = "Null";
     public const string UNTAGGED = "Untagged";
 
     public const string FRONT = "Front";

@@ -20,6 +20,8 @@ public class SpinCube : MonoBehaviour
 
     private int pending_spin = 0;
     private Vector2 mouse_movement;
+    private bool change_direction = false;
+    private float rotate_direction = 0;
 
     private RaycastHit hit;
 
@@ -37,8 +39,12 @@ public class SpinCube : MonoBehaviour
         }
         if (free_spin)
         {
-            print("free_spin");
-            mouse_movement = cubeController.MouseMovement();
+            if (left_click)
+            {
+                mouse_movement = cubeController.MouseMovement();
+                mouse_movement *= sensitive * Time.deltaTime;
+                FreeSpin();
+            }
         }
         if (spinning)
         {
@@ -46,6 +52,7 @@ public class SpinCube : MonoBehaviour
         }
     }
 
+    //****************************************************************************************
     public void leftClick()
     {
         if (!spinning)
@@ -64,13 +71,15 @@ public class SpinCube : MonoBehaviour
         if (left_click)
         {
             left_click = false;
-            if (!free_spin)
-            {
-                click_spin();
-            }
+            if (TAG != Tags.NULL && TAG != Tags.UNTAGGED)
+                if (!free_spin)
+                    click_spin();
+                else
+                    fixSpin();
         }
     }
 
+    //**************************************************************************************
     private void addSpinToEuler_target()
     {
         float target_rotation = Center.transform.localRotation.eulerAngles.z + 90;
@@ -86,17 +95,18 @@ public class SpinCube : MonoBehaviour
         if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit))
         {
             TAG = hit.transform.tag;
-            if (TAG != Tags.UNTAGGED)
-            {
-                if (TAG == Tags.CORNER || TAG == Tags.EDGE)
-                {
-                    TAG = groupFaces.CheckFaceBelong(hit.transform.parent.transform.gameObject, hit.normal, true, true);
-                }
-            }
-        }   
+        }
+        else TAG = Tags.NULL;
     }
     private void click_spin()
     {
+        if (TAG != Tags.UNTAGGED)
+        {
+            if (TAG == Tags.CORNER || TAG == Tags.EDGE)
+            {
+                TAG = groupFaces.CheckFaceBelong(hit.transform.parent.transform.gameObject, hit.normal, true, false);
+            }
+        }
         if (TAG == "None") return;
         spinning = true;
         Center = groupFaces.GroupPieces(TAG);
@@ -116,6 +126,7 @@ public class SpinCube : MonoBehaviour
             if (pending_spin == 0)
             {
                 spinning = false;
+                free_spin = false;
                 groupFaces.UnparentPieces(TAG);
                 groupFaces.UpdateSides();
             }
@@ -129,13 +140,88 @@ public class SpinCube : MonoBehaviour
 
     private void FreeSpin()
     {
-        RaycastHit hit;
-        if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit))
+        if (TAG != Tags.UNTAGGED)
         {
-            // face needed to spin cross with hit normal 
-            //  if clicked at the front, moving right is + mouse x, with cross product for x
-            //  multiply to get negative rotating angle (counter clock wise)
+            if (TAG == Tags.CORNER || TAG == Tags.EDGE)
+            {
+                TAG = groupFaces.CheckFaceBelong(hit.transform.parent.transform.gameObject, hit.normal, false, false);
+            }
+        }
+        if (TAG == "None") return;
+        Center = groupFaces.GroupPieces(TAG);
+
+        Vector3 cross_product = Vector3.Cross(Center.forward, hit.normal);
+        float x_factor = -cross_product.x;
+        float y_factor = cross_product.y;
+        if(Mathf.Abs(cross_product.x) < Mathf.Abs(cross_product.z))
+            x_factor = cross_product.z;
+
+        float target_rotation = mouse_movement.x * x_factor + mouse_movement.y * y_factor;
+        Center.Rotate(0, 0, target_rotation, Space.Self);
+        if (!change_direction)
+        {
+            if (rotate_direction == 0)
+            {
+                rotate_direction = target_rotation;
+            }
+            else if (rotate_direction > 0)
+            {
+                if (target_rotation < -0.1)
+                {
+                    change_direction = true;
+                    rotate_direction = 0;
+                }
+            }
+            else if (rotate_direction < 0)
+            {
+                if (target_rotation > 0.1)
+                {
+                    change_direction = true;
+                    rotate_direction = 0;
+                }
+            }
         }
     }
 
+    private void fixSpin()
+    {
+        Vector3 target_rotation = Center.localRotation.eulerAngles;
+        if (change_direction || rotate_direction == 0)
+        {
+            target_rotation = fix_angles(target_rotation, 0);
+        }
+        else if (rotate_direction > 0)
+        {
+            target_rotation = fix_angles(target_rotation, 1);
+        }
+        else if(rotate_direction < 0)
+        {
+            target_rotation = fix_angles(target_rotation, -1);
+        }
+        change_direction = false;
+        rotate_direction = 0;
+        euler_target = Quaternion.Euler(target_rotation);
+        spinning = true;
+    }
+
+    private Vector3 fix_angles(Vector3 _v, int _dir)
+    {
+        Vector3 new_v;
+        new_v.x = Mathf.Round(_v.x/ 90) * 90;
+        new_v.y = Mathf.Round(_v.y / 90) * 90;
+        new_v.z = Mathf.Round(_v.z / 90) * 90;
+        if (_dir > 0)
+        {
+            if (new_v.x < _v.x) new_v.x += 90;
+            if (new_v.y < _v.y) new_v.y += 90;
+            if (new_v.z < _v.z) new_v.z += 90;
+        }
+        if (_dir < 0)
+        {
+            if (new_v.x > _v.x) new_v.x -= 90;
+            if (new_v.y > _v.y) new_v.y -= 90;
+            if (new_v.z > _v.z) new_v.z -= 90;
+        }
+        return new_v;
+    }
 }
