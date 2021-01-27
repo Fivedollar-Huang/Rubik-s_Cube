@@ -35,7 +35,9 @@ public class SpinCube : MonoBehaviour
     {
         if (left_click && !free_spin)
         {
-            if (cubeController.MouseMovement() != Vector2.zero) free_spin = true; 
+            if (Mathf.Abs(cubeController.MouseMovement().x) >= 0.02f && 
+                Mathf.Abs(cubeController.MouseMovement().y) >= 0.02f)
+                free_spin = true; 
         }
         if (free_spin)
         {
@@ -84,7 +86,7 @@ public class SpinCube : MonoBehaviour
         RaycastHit save_hit;
         if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out save_hit))
         {
-            if (save_hit.transform.tag == TAG)
+            if (save_hit.transform.tag == TAG || save_hit.transform.parent.transform.parent.transform.tag == TAG)
             {
                 pending_spin++;
                 if (pending_spin == 4) pending_spin = 0;
@@ -115,7 +117,7 @@ public class SpinCube : MonoBehaviour
         {
             if (TAG == Tags.CORNER || TAG == Tags.EDGE)
             {
-                TAG = groupFaces.CheckFaceBelong(hit.transform.parent.transform.gameObject, hit.normal, true, false);
+                TAG = groupFaces.CheckFaceBelong(hit.transform.parent.transform.gameObject, hit.normal, true);
             }
         }
         if (TAG == "None") return;
@@ -153,9 +155,13 @@ public class SpinCube : MonoBehaviour
     {
         if (TAG != Tags.UNTAGGED)
         {
-            if (TAG == Tags.CORNER || TAG == Tags.EDGE)
+            if (TAG == Tags.EDGE)
             {
-                TAG = groupFaces.CheckFaceBelong(hit.transform.parent.transform.gameObject, hit.normal, false, false);
+                TAG = groupFaces.CheckFaceBelong(hit.transform.parent.transform.gameObject, hit.normal, false);
+            }
+            if(TAG == Tags.CORNER)
+            {
+                TAG = groupFaces.FindCornerSpinSide(hit.transform.parent.transform.gameObject, hit.normal, mouse_movement);
             }
         }
         if (TAG == "None") return;
@@ -221,18 +227,21 @@ public class SpinCube : MonoBehaviour
         new_v.x = Mathf.Round(_v.x/ 90) * 90;
         new_v.y = Mathf.Round(_v.y / 90) * 90;
         new_v.z = Mathf.Round(_v.z / 90) * 90;
-        if (_dir > 0)
+        if (_dir == 1)
         {
             if (new_v.x < _v.x) new_v.x += 90;
             if (new_v.y < _v.y) new_v.y += 90;
             if (new_v.z < _v.z) new_v.z += 90;
+            if (TAG == Tags.DOWN) new_v.y -= 90;
         }
-        if (_dir < 0)
+        if (_dir == -1)
         {
             if (new_v.x > _v.x) new_v.x -= 90;
             if (new_v.y > _v.y) new_v.y -= 90;
             if (new_v.z > _v.z) new_v.z -= 90;
+            if (TAG == Tags.DOWN) new_v.y += 90;
         }
+        if (TAG == Tags.LEFT) new_v.x = 0;
         return new_v;
     }
 }

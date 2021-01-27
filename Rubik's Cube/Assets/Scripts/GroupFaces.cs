@@ -125,7 +125,7 @@ public class GroupFaces : MonoBehaviour
         }
     }
 
-    public string CheckFaceBelong(GameObject _piece, Vector3 _normal, bool _click, bool _corner = false)
+    public string CheckFaceBelong(GameObject _piece, Vector3 _normal, bool _click)
     {
         string center_tag = "None";
         foreach (List<GameObject> pieces in GetListListGameObject())
@@ -172,5 +172,37 @@ public class GroupFaces : MonoBehaviour
     {
         List<List<GameObject>> combineList = new List<List<GameObject>> { up, down, right, left, front, back };
         return combineList;
-    }   
+    }  
+    
+    public string FindCornerSpinSide(GameObject _piece, Vector3 _normal, Vector2 mouse_movement)
+    {
+        string center_tag = "None";
+        List<Transform> sides = new List<Transform>();
+        List<float> distance = new List<float>();
+        foreach (List<GameObject> pieces in GetListListGameObject())
+        {
+            if (pieces.Contains(_piece))
+            {
+                center = turnListToTransform(pieces);
+                if (Vector3.Distance(_normal, center.forward) >= 1)
+                {
+                    sides.Add(center);
+                    Vector2 spin_direction = new Vector2();
+                    Vector3 cross_product = Vector3.Cross(center.forward, _normal);
+                    spin_direction.x = -cross_product.x;
+                    spin_direction.y = cross_product.y;
+                    if (Mathf.Abs(cross_product.x) < Mathf.Abs(cross_product.z))
+                        spin_direction.x = cross_product.z;
+                    distance.Add(Mathf.Min(Vector2.Distance(spin_direction, mouse_movement),
+                                           Vector2.Distance(-spin_direction, mouse_movement)));
+                }
+            }
+        }
+        if (distance[0] < distance[1])
+            center_tag = sides[0].tag;
+        else if(distance[1] < distance[0])  // not necessary but idk, I just want to put it here
+            center_tag = sides[1].tag;
+        return center_tag;
+    }
+
 }
