@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 895186398061899435}
   m_Layer: 0
   m_Name: Corner
-  m_TagString: Corner
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -97,7 +97,7 @@ PrefabInstance:
     - target: {fileID: 7350919028595652298, guid: c12eecf93caf08147a5b8b272460cf7c,
         type: 3}
       propertyPath: m_TagString
-      value: Corner
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 7874655293247466608, guid: c12eecf93caf08147a5b8b272460cf7c,
         type: 3}
@@ -177,7 +177,7 @@ PrefabInstance:
     - target: {fileID: 7350919028595652298, guid: c12eecf93caf08147a5b8b272460cf7c,
         type: 3}
       propertyPath: m_TagString
-      value: Corner
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 7874655293247466608, guid: c12eecf93caf08147a5b8b272460cf7c,
         type: 3}
@@ -257,7 +257,7 @@ PrefabInstance:
     - target: {fileID: 7350919028595652298, guid: c12eecf93caf08147a5b8b272460cf7c,
         type: 3}
       propertyPath: m_TagString
-      value: Corner
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 7874655293247466608, guid: c12eecf93caf08147a5b8b272460cf7c,
         type: 3}
