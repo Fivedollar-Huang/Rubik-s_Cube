@@ -24,7 +24,7 @@ Entering move will rotate side of the input 90 degree clock wise\
 Entering move when holding shift will rotate counter clock wise.
 
 
-Valid inputs are:/
+Valid inputs are:   \
 F for front, B for back, U for up, D for down, L for left, R for right\
 M for middle, E for equatorial, S for standing
 
