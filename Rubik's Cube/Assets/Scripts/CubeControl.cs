@@ -57,7 +57,6 @@ public class CubeControl : MonoBehaviour
             }
             print("True");
         }
-        print(savedPieces[0].eulerAngles);
     }
 
     private void CheckRotation()

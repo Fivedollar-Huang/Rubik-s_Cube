@@ -126,19 +126,19 @@ public class GroupPieces : MonoBehaviour
             case "M":
                 middle = UpdateGroup(middle, reverse);
                 GroupRotateSide(middle);
-                rotatePieces.RotateCenterPiece(ChangeIntToTransform(middle), angle);
+                rotatePieces.RotateCenterPiece(ChangeIntToTransform(middle), angle, 'M');
                 processing = true;
                 break;
             case "E":
                 equatorial = UpdateGroup(equatorial, reverse);
                 GroupRotateSide(equatorial);
-                rotatePieces.RotateCenterPiece(ChangeIntToTransform(equatorial), angle);
+                rotatePieces.RotateCenterPiece(ChangeIntToTransform(equatorial), angle, 'E');
                 processing = true;
                 break;
             case "S":
                 standing = UpdateGroup(standing, reverse);
                 GroupRotateSide(standing);
-                rotatePieces.RotateCenterPiece(ChangeIntToTransform(standing), angle);
+                rotatePieces.RotateCenterPiece(ChangeIntToTransform(standing), angle, 'S');
                 processing = true;
                 break;
         }
