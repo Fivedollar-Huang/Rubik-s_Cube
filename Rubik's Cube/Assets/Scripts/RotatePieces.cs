@@ -45,17 +45,16 @@ public class RotatePieces : MonoBehaviour
         rotatingPieces = centerPiece;
         pieceToRotate = centerPiece[0];
         localAngle = pieceToRotate.localRotation.eulerAngles;
-        print(localAngle);
         if (side == ' ')
         {
             targetAngle = new Vector3(localAngle.x, localAngle.y, FixTarget(localAngle.z + angle));
         }
         else
         {
-            targetTransform.position = pieceToRotate.position;
-            targetTransform.rotation = pieceToRotate.rotation;
+            //targetTransform.position = pieceToRotate.position;
+            targetTransform.rotation = pieceToRotate.transform.rotation;
             if (side == 'E')
-            { 
+            {
                 targetTransform.RotateAround(targetTransform.position, -targetTransform.transform.parent.up, angle);
                 //targetAngle = new Vector3(localAngle.x, FixTarget(localAngle.y + angle), localAngle.z);
             }
@@ -66,12 +65,13 @@ public class RotatePieces : MonoBehaviour
             }
             else if(side == 'M')
             {
-                targetTransform.RotateAround(targetTransform.position, targetTransform.transform.parent.forward, angle);
+                targetTransform.RotateAround(targetTransform.position, -targetTransform.transform.parent.forward, angle);
             }
-            targetAngle = targetTransform.rotation.eulerAngles;
+            targetAngle = targetTransform.localRotation.eulerAngles;
         }
         rotating = true;
         eulerTarget = Quaternion.Euler(targetAngle);
+        print(targetTransform.rotation.eulerAngles);
     }
 
     private void RotateCenterPiece()
