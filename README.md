@@ -15,6 +15,18 @@ middle mouse click to reset the cube position to original position
 
 
 
+# For another method without using raycast, go to other branch called second method
+
+Second method are currently only controlled by keyboard to perform all type of moves.
+
+
+Entering move will rotate side of the input 90 degree clock wise\
+Entering move when holding shift will rotate counter clock wise.
+
+
+Valid inputs are:/
+F for front, B for back, U for up, D for down, L for left, R for right\
+M for middle, E for equatorial, S for standing
 
 
 
