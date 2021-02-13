@@ -1892,7 +1892,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetTransform: {fileID: 1532465754}
-  rotateSpeed: 150
+  rotateSpeed: 350
 --- !u!1001 &1251020059
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -7,13 +7,13 @@ public class RotatePieces : MonoBehaviour
     public Transform targetTransform;
 
     [SerializeField]
-    private float rotateSpeed = 150f;
+    private float rotateSpeed = 350f;
+
     private bool rotating = false;
 
     private Vector3 localAngle;
     private Vector3 targetAngle;
     private Transform pieceToRotate;
-    private List<Transform> rotatingPieces;
 
     private Quaternion eulerLocal;
     private Quaternion eulerTarget;
@@ -40,38 +40,34 @@ public class RotatePieces : MonoBehaviour
         return _float;
     }
 
-    public void RotateCenterPiece(List<Transform> centerPiece, float angle, char side = ' ')
+    public void RotateCenterPiece(Transform centerPiece, float angle, char side = ' ')
     {
-        rotatingPieces = centerPiece;
-        pieceToRotate = centerPiece[0];
+        pieceToRotate = centerPiece;
         localAngle = pieceToRotate.localRotation.eulerAngles;
+
+        targetTransform.rotation = pieceToRotate.transform.rotation;
         if (side == ' ')
         {
             targetAngle = new Vector3(localAngle.x, localAngle.y, FixTarget(localAngle.z + angle));
         }
-        else
+        else if (side == 'E')
         {
-            //targetTransform.position = pieceToRotate.position;
-            targetTransform.rotation = pieceToRotate.transform.rotation;
-            if (side == 'E')
-            {
-                targetTransform.RotateAround(targetTransform.position, -targetTransform.transform.parent.up, angle);
-                //targetAngle = new Vector3(localAngle.x, FixTarget(localAngle.y + angle), localAngle.z);
-            }
-            else if (side == 'S')
-            {
-                targetTransform.RotateAround(targetTransform.position, targetTransform.transform.parent.right, angle);
-                //targetAngle = new Vector3(FixTarget(localAngle.x + angle), localAngle.y, localAngle.z);
-            }
-            else if(side == 'M')
-            {
-                targetTransform.RotateAround(targetTransform.position, -targetTransform.transform.parent.forward, angle);
-            }
+            targetTransform.RotateAround(targetTransform.position, -targetTransform.transform.parent.up, angle);
             targetAngle = targetTransform.localRotation.eulerAngles;
         }
+        else if (side == 'S')
+        {
+            targetTransform.RotateAround(targetTransform.position, targetTransform.transform.parent.right, angle);
+            targetAngle = targetTransform.localRotation.eulerAngles;
+        }
+        else if (side == 'M')
+        {
+            targetTransform.RotateAround(targetTransform.position, -targetTransform.transform.parent.forward, angle);
+            targetAngle = targetTransform.localRotation.eulerAngles;
+        }
+
         rotating = true;
         eulerTarget = Quaternion.Euler(targetAngle);
-        print(targetTransform.rotation.eulerAngles);
     }
 
     private void RotateCenterPiece()
@@ -87,7 +83,7 @@ public class RotatePieces : MonoBehaviour
             Mathf.Abs(Mathf.Abs(eulerLocal.w) - Mathf.Abs(eulerTarget.w)) < 0.01)
         {
             rotating = false;
-            groupPieces.FinishGAR(rotatingPieces);
+            groupPieces.FinishGAR();
         }
     }
 

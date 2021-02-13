@@ -11,6 +11,7 @@ public class CubeControl : MonoBehaviour
     private List<Vector3> savedDirection;
 
     private bool shift;
+    private bool cap;
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +34,8 @@ public class CubeControl : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift)) shift = true;
         if (Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.RightShift)) shift = false;
+        if (Input.GetKeyDown(KeyCode.CapsLock) || Input.GetKeyDown(KeyCode.RightAlt)) cap = true;
+        if (Input.GetKeyUp(KeyCode.CapsLock) || Input.GetKeyUp(KeyCode.RightAlt)) cap = false;
         CheckSolved();
         CheckRotation();
     }
@@ -49,10 +52,13 @@ public class CubeControl : MonoBehaviour
         {
             for (int i = 0; i < 27; i++)
             {
-                if (currentPieces[i] != savedPieces[i] || currentPieces[i].forward != savedDirection[i])
+                if (currentPieces[i] != savedPieces[i] || Vector3.Distance(currentPieces[i].forward, savedDirection[i]) > 0.1)
                 {
-                    print("False");
-                    return;
+                    if (i != 13)
+                    {
+                        print("False");
+                        return;
+                    }
                 }
             }
             print("True");
@@ -63,48 +69,63 @@ public class CubeControl : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
-            groupPieces.GroupAndRotate("F", shift);
+            groupPieces.GroupAndRotate("F", shift, cap);
             print("F");
         }
         else if (Input.GetKeyDown(KeyCode.B))
         {
-            groupPieces.GroupAndRotate("B", shift);
+            groupPieces.GroupAndRotate("B", shift, cap);
             print("B");
         }
         else if (Input.GetKeyDown(KeyCode.R))
         {
-            groupPieces.GroupAndRotate("R", shift);
+            groupPieces.GroupAndRotate("R", shift, cap);
             print("R");
         }
         else if (Input.GetKeyDown(KeyCode.L))
         {
-            groupPieces.GroupAndRotate("L", shift);
+            groupPieces.GroupAndRotate("L", shift, cap);
             print("L");
         }
         else if (Input.GetKeyDown(KeyCode.U))
         {
-            groupPieces.GroupAndRotate("U", shift);
+            groupPieces.GroupAndRotate("U", shift, cap);
             print("U");
         }
         else if (Input.GetKeyDown(KeyCode.D))
         {
-            groupPieces.GroupAndRotate("D", shift);
+            groupPieces.GroupAndRotate("D", shift, cap);
             print("D");
         }
         else if (Input.GetKeyDown(KeyCode.M))
         {
-            groupPieces.GroupAndRotate("M", shift);
+            groupPieces.GroupAndRotate("M", shift, false);
             print("M");
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
-            groupPieces.GroupAndRotate("S", shift);
+            groupPieces.GroupAndRotate("S", shift, false);
             print("S");
         }
         else if (Input.GetKeyDown(KeyCode.E))
         {
-            groupPieces.GroupAndRotate("E", shift);
+            groupPieces.GroupAndRotate("E", shift, false);
             print("E");
+        }
+        else if (Input.GetKeyDown(KeyCode.X))
+        {
+            groupPieces.GroupAndRotate("X", shift, true);
+            print("X");
+        }
+        else if (Input.GetKeyDown(KeyCode.Y))
+        {
+            groupPieces.GroupAndRotate("Y", shift, true);
+            print("Y");
+        }
+        else if (Input.GetKeyDown(KeyCode.Z))
+        {
+            groupPieces.GroupAndRotate("Z", shift, true);
+            print("Z");
         }
     }
 

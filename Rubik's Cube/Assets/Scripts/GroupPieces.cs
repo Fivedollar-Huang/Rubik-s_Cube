@@ -34,6 +34,8 @@ public class GroupPieces : MonoBehaviour
     private List<int> equatorial;
     private List<int> standing;
 
+    private List<Transform> groupedSide;
+    private int groupedSize;
     private bool processing;
 
     RotatePieces rotatePieces;
@@ -82,83 +84,216 @@ public class GroupPieces : MonoBehaviour
         processing = false;
     }
 
-    public void GroupAndRotate(string move, bool reverse)
+    public void GroupAndRotate(string move, bool reverse, bool lower)
     {
         if (processing) return;
         float angle = 90;
         if (reverse) angle = -90;
+        groupedSize = 9;
+        if (!lower)
+        {
+            switch (move)
+            {
+                case "F":
+                    front = UpdateGroup(front, reverse);
+                    GroupRotateSide(front);
+                    RememberGoupedSide(front);
+                    rotatePieces.RotateCenterPiece(pieces[front[0]], angle);
+                    processing = true;
+                    return;
+                case "B":
+                    back = UpdateGroup(back, reverse);
+                    GroupRotateSide(back);
+                    RememberGoupedSide(back);
+                    rotatePieces.RotateCenterPiece(pieces[back[0]], angle);
+                    processing = true;
+                    return;
+                case "L":
+                    left = UpdateGroup(left, reverse);
+                    GroupRotateSide(left);
+                    RememberGoupedSide(left);
+                    rotatePieces.RotateCenterPiece(pieces[left[0]], angle);
+                    processing = true;
+                    return;
+                case "R":
+                    right = UpdateGroup(right, reverse);
+                    GroupRotateSide(right);
+                    RememberGoupedSide(right);
+                    rotatePieces.RotateCenterPiece(pieces[right[0]], angle);
+                    processing = true;
+                    return;
+                case "U":
+                    up = UpdateGroup(up, reverse);
+                    GroupRotateSide(up);
+                    RememberGoupedSide(up);
+                    rotatePieces.RotateCenterPiece(pieces[up[0]], angle);
+                    processing = true;
+                    return;
+                case "D":
+                    down = UpdateGroup(down, reverse);
+                    GroupRotateSide(down);
+                    RememberGoupedSide(down);
+                    rotatePieces.RotateCenterPiece(pieces[down[0]], angle);
+                    processing = true;
+                    return;
+                case "M":
+                    middle = UpdateGroup(middle, reverse);
+                    GroupRotateSide(middle);
+                    RememberGoupedSide(middle);
+                    rotatePieces.RotateCenterPiece(pieces[middle[0]], angle, 'M');
+                    processing = true;
+                    return;
+                case "E":
+                    equatorial = UpdateGroup(equatorial, reverse);
+                    GroupRotateSide(equatorial);
+                    RememberGoupedSide(equatorial);
+                    rotatePieces.RotateCenterPiece(pieces[equatorial[0]], angle, 'E');
+                    processing = true;
+                    return;
+                case "S":
+                    standing = UpdateGroup(standing, reverse);
+                    GroupRotateSide(standing);
+                    RememberGoupedSide(standing);
+                    rotatePieces.RotateCenterPiece(pieces[standing[0]], angle, 'S');
+                    processing = true;
+                    return;
+            }
+            return;
+        }
+
+        groupedSize = 18;
+        List<int> combinedList;
         switch (move)
         {
             case "F":
                 front = UpdateGroup(front, reverse);
-                GroupRotateSide(front);
-                rotatePieces.RotateCenterPiece(ChangeIntToTransform(front), angle);
+                standing = UpdateGroup(standing, reverse);
+
+                combinedList = combineList(standing, front);
+                GroupRotateSide(combinedList);
+                RememberGoupedSide(combinedList);
+                rotatePieces.RotateCenterPiece(pieces[front[0]], angle);
                 processing = true;
-                break;
+                return;
             case "B":
                 back = UpdateGroup(back, reverse);
-                GroupRotateSide(back);
-                rotatePieces.RotateCenterPiece(ChangeIntToTransform(back), angle);
+                standing = UpdateGroup(standing, !reverse);
+
+                combinedList = combineList(standing, back);
+                GroupRotateSide(combinedList);
+                RememberGoupedSide(combinedList);
+                rotatePieces.RotateCenterPiece(pieces[back[0]], angle);
                 processing = true;
-                break;
-            case "L":
-                left = UpdateGroup(left, reverse);
-                GroupRotateSide(left);
-                rotatePieces.RotateCenterPiece(ChangeIntToTransform(left), angle);
-                processing = true;
-                break;
+                return;
             case "R":
                 right = UpdateGroup(right, reverse);
-                GroupRotateSide(right);
-                rotatePieces.RotateCenterPiece(ChangeIntToTransform(right), angle);
+                middle = UpdateGroup(middle, !reverse);
+
+                combinedList = combineList(middle, right);
+                GroupRotateSide(combinedList);
+                RememberGoupedSide(combinedList);
+                rotatePieces.RotateCenterPiece(pieces[right[0]], angle);
                 processing = true;
-                break;
+                return;
+            case "L":
+                left = UpdateGroup(left, reverse);
+                middle = UpdateGroup(middle, reverse);
+
+                combinedList = combineList(middle, left);
+                GroupRotateSide(combinedList);
+                RememberGoupedSide(combinedList);
+                rotatePieces.RotateCenterPiece(pieces[left[0]], angle);
+                processing = true;
+                return;
             case "U":
                 up = UpdateGroup(up, reverse);
-                GroupRotateSide(up);
-                rotatePieces.RotateCenterPiece(ChangeIntToTransform(up), angle);
+                equatorial = UpdateGroup(equatorial, !reverse);
+
+                combinedList = combineList(equatorial, up);
+                GroupRotateSide(combinedList);
+                RememberGoupedSide(combinedList);
+                rotatePieces.RotateCenterPiece(pieces[up[0]], angle);
                 processing = true;
-                break;
+                return;
             case "D":
                 down = UpdateGroup(down, reverse);
-                GroupRotateSide(down);
-                rotatePieces.RotateCenterPiece(ChangeIntToTransform(down), angle);
-                processing = true;
-                break;
-            case "M":
-                middle = UpdateGroup(middle, reverse);
-                GroupRotateSide(middle);
-                rotatePieces.RotateCenterPiece(ChangeIntToTransform(middle), angle, 'M');
-                processing = true;
-                break;
-            case "E":
                 equatorial = UpdateGroup(equatorial, reverse);
-                GroupRotateSide(equatorial);
-                rotatePieces.RotateCenterPiece(ChangeIntToTransform(equatorial), angle, 'E');
+
+                combinedList = combineList(equatorial, down);
+                GroupRotateSide(combinedList);
+                RememberGoupedSide(combinedList);
+                rotatePieces.RotateCenterPiece(pieces[down[0]], angle);
                 processing = true;
-                break;
-            case "S":
+                return;
+        }
+        groupedSize = 27;
+        switch (move)
+        {
+            case "X":
+                right = UpdateGroup(right, reverse);
+                middle = UpdateGroup(middle, !reverse);
+                left = UpdateGroup(left, !reverse);
+
+                combinedList = combineList(middle, right);
+                combinedList = combineList(left, combinedList);
+                GroupRotateSide(combinedList);
+                RememberGoupedSide(combinedList);
+                rotatePieces.RotateCenterPiece(pieces[right[0]], angle);
+                processing = true;
+                return;
+            case "Y":
+                up = UpdateGroup(up, reverse);
+                equatorial = UpdateGroup(equatorial, !reverse);
+                down = UpdateGroup(down, !reverse);
+
+                combinedList = combineList(equatorial, up);
+                combinedList = combineList(down, combinedList);
+                GroupRotateSide(combinedList);
+                RememberGoupedSide(combinedList);
+                rotatePieces.RotateCenterPiece(pieces[up[0]], angle);
+                processing = true;
+                return;
+            case "Z":
+                front = UpdateGroup(front, reverse);
                 standing = UpdateGroup(standing, reverse);
-                GroupRotateSide(standing);
-                rotatePieces.RotateCenterPiece(ChangeIntToTransform(standing), angle, 'S');
+                back = UpdateGroup(back, !reverse);
+
+                combinedList = combineList(standing, front);
+                combinedList = combineList(back, combinedList);
+                GroupRotateSide(combinedList);
+                RememberGoupedSide(combinedList);
+                rotatePieces.RotateCenterPiece(pieces[front[0]], angle);
                 processing = true;
-                break;
+                return;
         }
     }
 
-    private List<Transform> ChangeIntToTransform(List<int> side)
+    private List<int> combineList(List<int> from, List<int> to)
     {
-        List<Transform> result = new List<Transform>();
-        for (int i = 0; i < 9; i++)
+        List<int> result = new List<int>();
+        foreach(int i in to)
         {
-            result.Add(pieces[side[i]]);
+            result.Add(i);
+        }
+        foreach (int i in from)
+        {
+            result.Add(i);
         }
         return result;
     }
 
-    public void FinishGAR(List<Transform> side)
+    private void RememberGoupedSide(List<int> side)
     {
-        UngroupRotateSide(side);
+        groupedSide = new List<Transform>();
+        for (int i = 0; i < groupedSize; i++)
+        {
+            groupedSide.Add(pieces[side[i]]);
+        }
+    }
+
+    public void FinishGAR()
+    {
+        UngroupRotateSide();
         processing = false;
     }
 
@@ -191,17 +326,17 @@ public class GroupPieces : MonoBehaviour
 
     private void GroupRotateSide(List<int> side)
     {
-        for (int i = 1; i < 9; i++)
+        for (int i = 1; i < groupedSize; i++)
         {
             pieces[side[i]].transform.parent = pieces[side[0]].transform;
         }
     }
 
-    private void UngroupRotateSide(List<Transform> side)
+    private void UngroupRotateSide()
     {
-        for (int i = 1; i < 9; i++)
+        for (int i = 1; i < groupedSize; i++)
         {
-            side[i].transform.parent = side[0].transform.parent.transform;
+            groupedSide[i].transform.parent = groupedSide[0].transform.parent.transform;
         }
     }
 
